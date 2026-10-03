@@ -19,7 +19,7 @@ img{max-width:100%}
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23101217'/%3E%3Ctext x='32' y='42' font-family='Arial Black,Arial,sans-serif' font-weight='900' font-size='26' text-anchor='middle' fill='%23FF5C8D'%3ETR%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Caveat:wght@500;700&display=swap">
 <style>
 /* Layout: bento grid hero (intro + live knowledge graph + stat tiles), then full-width sections built from the same tile system. Max 76rem. */
 :root{
@@ -46,6 +46,9 @@ img{max-width:100%}
   --body:"Hanken Grotesk","Segoe UI",system-ui,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
   --r:20px;
+  --hand:"Caveat","Segoe Print","Bradley Hand",cursive;
+  --frame:#FFFFFF;
+  --frame-ink:#2A2D35;
   --orb-o:.30;
   --grain-o:.32;
   --glass:color-mix(in srgb,var(--tile) 80%,transparent);
@@ -55,7 +58,7 @@ img{max-width:100%}
     --bg:#0A0B0F; --dots:rgba(255,255,255,.05); --tile:#13151B; --tile-2:#191C24; --line:#252935;
     --ink:#EEF0F4; --muted:#9AA0AE; --dim:#666D7D; --accent:#FF5C8D; --accent-ink:#14060B; --accent-soft:rgba(255,92,141,.13);
     --blue:#7C9DFF; --blue-soft:rgba(124,157,255,.13); --amber:#F0B354; --amber-soft:rgba(240,179,84,.13); --ok:#43D18D;
-    --term:#08090D; --term-ink:#D9DCE4; --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.25); --orb-o:.20; --grain-o:.22;
+    --term:#08090D; --term-ink:#D9DCE4; --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.25); --orb-o:.20; --grain-o:.22; --frame:#ECEAE4; --frame-ink:#2A2D35;
     color-scheme:dark;
   }
 }
@@ -63,7 +66,7 @@ img{max-width:100%}
   --bg:#0A0B0F; --dots:rgba(255,255,255,.05); --tile:#13151B; --tile-2:#191C24; --line:#252935;
   --ink:#EEF0F4; --muted:#9AA0AE; --dim:#666D7D; --accent:#FF5C8D; --accent-ink:#14060B; --accent-soft:rgba(255,92,141,.13);
   --blue:#7C9DFF; --blue-soft:rgba(124,157,255,.13); --amber:#F0B354; --amber-soft:rgba(240,179,84,.13); --ok:#43D18D;
-  --term:#08090D; --term-ink:#D9DCE4; --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.25); --orb-o:.20; --grain-o:.22;
+  --term:#08090D; --term-ink:#D9DCE4; --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.25); --orb-o:.20; --grain-o:.22; --frame:#ECEAE4; --frame-ink:#2A2D35;
   color-scheme:dark;
 }
 
@@ -274,8 +277,6 @@ section{padding-block:clamp(2.5rem,6vw,4.5rem)}
 @media (max-width:1100px){.sp .big{grid-row:auto}}
 @media (max-width:560px){.sp .big{grid-column:auto}}
 .sp .photo{grid-row:span 2;padding:0;min-height:22rem}
-.sp .photo .shotbtn,.ccps .shotbtn{all:unset;display:block;width:100%;height:100%;cursor:zoom-in;position:relative}
-.sp .photo .shotbtn{flex:1}
 .shotbtn:focus-visible{outline:2px solid var(--accent);outline-offset:-4px}
 .sp .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 35%;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
 .sp .photo:hover img,.ccps .pic:hover img{transform:scale(1.04)}
@@ -347,6 +348,53 @@ footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;font-
 .lb .prev{left:16px}.lb .next{right:16px}
 .t-visa .see{font-family:var(--mono);font-size:.8rem;color:var(--blue);text-decoration:none;margin-top:auto}
 .t-visa .see:hover{text-decoration:underline}
+
+
+/* ---------- polaroid frames ---------- */
+.polaroid{position:relative;margin:0;background:var(--frame);padding:10px 10px 0;border-radius:4px;box-shadow:0 1px 2px rgba(0,0,0,.08),0 12px 30px rgba(16,18,23,.16),0 30px 60px -20px rgba(16,18,23,.25);transform:rotate(var(--rot,-2deg));transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s;display:flex;flex-direction:column}
+.polaroid:hover,.polaroid:focus-within{transform:rotate(0deg) translateY(-6px) scale(1.025);z-index:3;box-shadow:0 2px 4px rgba(0,0,0,.08),0 24px 50px rgba(16,18,23,.22)}
+.polaroid .ph{all:unset;position:relative;display:block;overflow:hidden;border-radius:2px;aspect-ratio:4/3;background:#1b1d22;cursor:zoom-in;max-width:100%}
+.polaroid .ph:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.polaroid .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.05) contrast(1.03);transition:transform .7s cubic-bezier(.2,.7,.2,1),filter .5s}
+.polaroid:hover .ph img{transform:scale(1.06)}
+.polaroid .ph::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,transparent 55%,rgba(0,0,0,.28) 100%);pointer-events:none}
+.polaroid figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;padding:.4rem .35rem .65rem;font-family:var(--hand);font-weight:700;font-size:1.4rem;line-height:1.05;color:var(--frame-ink)}
+.polaroid figcaption small{font-family:var(--mono);font-weight:400;font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:#8A8F9C;white-space:nowrap}
+/* washi tape */
+.tape{position:absolute;top:-13px;left:50%;width:92px;height:26px;z-index:2;transform:translateX(-50%) rotate(var(--trot,-4deg));background:repeating-linear-gradient(45deg,color-mix(in srgb,var(--tape,var(--accent)) 70%,transparent) 0 6px,color-mix(in srgb,var(--tape,var(--accent)) 52%,transparent) 6px 12px);clip-path:polygon(3% 0,97% 0,100% 18%,96% 34%,100% 52%,96% 70%,100% 86%,97% 100%,3% 100%,0 84%,4% 66%,0 50%,4% 32%,0 16%);box-shadow:0 1px 2px rgba(0,0,0,.08);pointer-events:none}
+.tape.l{left:14%;--trot:-28deg;width:70px}.tape.r{left:86%;--trot:28deg;width:70px}
+/* viewfinder overlay */
+.vf{position:absolute;inset:14px;pointer-events:none;opacity:0;transition:opacity .35s,inset .35s;--c:rgba(255,255,255,.95);
+  background:linear-gradient(var(--c),var(--c)) top left/20px 2px no-repeat,linear-gradient(var(--c),var(--c)) top left/2px 20px no-repeat,
+  linear-gradient(var(--c),var(--c)) top right/20px 2px no-repeat,linear-gradient(var(--c),var(--c)) top right/2px 20px no-repeat,
+  linear-gradient(var(--c),var(--c)) bottom left/20px 2px no-repeat,linear-gradient(var(--c),var(--c)) bottom left/2px 20px no-repeat,
+  linear-gradient(var(--c),var(--c)) bottom right/20px 2px no-repeat,linear-gradient(var(--c),var(--c)) bottom right/2px 20px no-repeat}
+.vf::before{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;transform:translate(-50%,-50%);background:linear-gradient(var(--c),var(--c)) center/18px 1.5px no-repeat,linear-gradient(var(--c),var(--c)) center/1.5px 18px no-repeat;opacity:.7}
+.rec{position:absolute;top:12px;left:14px;font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;color:#fff;opacity:0;transition:opacity .35s;display:flex;align-items:center;gap:.35rem;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+.rec::before{content:"";width:7px;height:7px;border-radius:50%;background:#FF3B3B;animation:blink 1.1s steps(1) infinite}
+.meta{position:absolute;right:14px;bottom:12px;font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.9);opacity:0;transition:opacity .35s;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.polaroid:hover .vf,.polaroid:focus-within .vf{opacity:1;inset:10px}
+.polaroid:hover .rec,.polaroid:hover .meta,.polaroid:focus-within .rec,.polaroid:focus-within .meta{opacity:1}
+/* gold foil frame for the medals */
+.polaroid.gold{background:linear-gradient(120deg,#F8E9B8 0%,#D7A443 22%,#FFF4CF 40%,#C78A26 58%,#F3D98E 78%,#B57A1C 100%);background-size:260% 260%;animation:foil 7s ease-in-out infinite alternate}
+.polaroid.gold figcaption{color:#3A2A08}
+.polaroid.gold figcaption small{color:#6B5220}
+.polaroid.gold .ph{box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+@keyframes foil{from{background-position:0% 50%}to{background-position:100% 50%}}
+.ribbon{position:absolute;top:-8px;right:-8px;z-index:2;font-family:var(--mono);font-size:.62rem;font-weight:500;letter-spacing:.06em;color:#3A2A08;background:#FFE7A3;border:1px solid #C78A26;border-radius:999px;padding:.25rem .55rem;transform:rotate(8deg);box-shadow:0 4px 10px rgba(0,0,0,.15)}
+/* layouts holding polaroids */
+.shots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 22px;padding:16px 6px 6px}
+@media (max-width:520px){.shots{grid-template-columns:minmax(0,1fr)}}
+.sp .photo-wrap{grid-row:span 2;display:flex;padding:14px 10px 10px;min-height:24rem}
+.sp .photo-wrap .polaroid{flex:1}
+.sp .photo-wrap .ph{aspect-ratio:auto;flex:1;min-height:18rem}
+.sp .photo-wrap .ph img{object-position:50% 30%}
+@media (max-width:1100px){.sp .photo-wrap{grid-row:auto;min-height:0}.sp .photo-wrap .ph{aspect-ratio:3/4;flex:none}}
+@media (max-width:560px){.sp .photo-wrap{padding-inline:14px}}
+.ccps-p{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 22px;padding:26px 20px 20px}
+@media (max-width:520px){.ccps-p{grid-template-columns:minmax(0,1fr)}}
+.ccps-p .ph{aspect-ratio:3/2}
+@media (prefers-reduced-motion:reduce){.polaroid,.polaroid .ph img{transition:none}.polaroid.gold{animation:none}.rec::before{animation:none}}
 
 /* palette */
 .pal-bg{position:fixed;inset:0;z-index:100;background:color-mix(in srgb,var(--bg) 60%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;justify-content:center;align-items:flex-start;padding:14vh 16px 16px}
@@ -460,8 +508,22 @@ footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;font-
         <li><span>Implemented backend authentication and caching services that improved security, scalability and response time.</span></li>
       </ul>
       <div class="shots">
-        <figure class="shot" style="margin:0"><button type="button" class="shotbtn" data-g="visa" data-i="0" aria-label="View photo: at the Visa office in Bangalore" style="all:unset;display:block;width:100%;height:100%;cursor:zoom-in"><img src="assets/visa-1.jpg" alt="Teesha standing in front of a mosaic wings mural at the Visa office in Bangalore" loading="lazy" width="1600" height="1200"></button><figcaption>Visa Bangalore</figcaption></figure>
-        <figure class="shot" style="margin:0"><button type="button" class="shotbtn" data-g="visa" data-i="1" aria-label="View photo: next to the Visa sign" style="all:unset;display:block;width:100%;height:100%;cursor:zoom-in"><img src="assets/visa-2.jpg" alt="Teesha wearing her Visa ID badge, standing beside a large blue VISA sign in the office corridor" loading="lazy" width="1600" height="1200"></button><figcaption>Summer 2026</figcaption></figure>
+        <figure class="polaroid" style="--rot:-2.5deg">
+          <span class="tape" style="--tape:var(--blue)"></span>
+          <button type="button" class="ph shotbtn" data-g="visa" data-i="0" aria-label="View photo: at the Visa office in Bangalore">
+            <img src="assets/visa-1.jpg" alt="Teesha standing in front of a mosaic wings mural at the Visa office in Bangalore" loading="lazy" width="1600" height="1200">
+            <span class="vf"></span><span class="rec">REC</span><span class="meta">IMG_2617 · BLR</span>
+          </button>
+          <figcaption>the wings wall ✦ <small>visa · blr</small></figcaption>
+        </figure>
+        <figure class="polaroid" style="--rot:2deg">
+          <span class="tape l" style="--tape:var(--amber)"></span><span class="tape r" style="--tape:var(--amber)"></span>
+          <button type="button" class="ph shotbtn" data-g="visa" data-i="1" aria-label="View photo: next to the Visa sign">
+            <img src="assets/visa-2.jpg" alt="Teesha wearing her Visa ID badge, standing beside a large blue VISA sign in the office corridor" loading="lazy" width="1600" height="1200">
+            <span class="vf"></span><span class="rec">REC</span><span class="meta">IMG_1611 · BLR</span>
+          </button>
+          <figcaption>badge on, summer '26 <small>visa · blr</small></figcaption>
+        </figure>
       </div>
       <div class="chips"><span class="chip">Kùzu graph DB</span><span class="chip">Graph traversal</span><span class="chip">Rule-based automation</span><span class="chip">Auth</span><span class="chip">Caching</span></div>
       <a class="lnk" href="https://drive.google.com/file/d/1tYxXez6Hr5KT81FY0nCdjpfHBxjhPZSf/view?usp=sharing" target="_blank" rel="noopener">View internship certificate ↗</a>
@@ -556,12 +618,17 @@ footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;font-
 <section id="sports">
   <div class="sh"><h2>On the <em>court</em></h2><p>Table tennis and badminton, from campus championships to Inter IIT.</p></div>
   <div class="sp">
-    <figure class="tile photo" style="margin:0">
-      <button type="button" class="shotbtn" data-g="sport" data-i="0" aria-label="View photo: Teesha with her medals">
-        <img src="assets/medals.jpg" alt="Teesha smiling outside a campus building at IIT Bhilai, holding up a silver and a gold medal" loading="lazy" width="960" height="1280">
-        <span class="pcap">medal day · IIT Bhilai</span>
-      </button>
-    </figure>
+    <div class="photo-wrap">
+      <figure class="polaroid gold" style="--rot:-2deg">
+        <span class="tape" style="--tape:var(--accent)"></span>
+        <span class="ribbon">🏅 x2</span>
+        <button type="button" class="ph shotbtn" data-g="sport" data-i="0" aria-label="View photo: Teesha with her medals">
+          <img src="assets/medals.jpg" alt="Teesha smiling outside a campus building at IIT Bhilai, holding up a silver and a gold medal" loading="lazy" width="960" height="1280">
+          <span class="vf"></span><span class="rec">REC</span><span class="meta">IIT BHILAI</span>
+        </button>
+        <figcaption>medal day! <small>gold + silver</small></figcaption>
+      </figure>
+    </div>
     <article class="tile big">
       <span class="eyebrow">table tennis · 2023–24</span>
       <div class="huge">1<sup>st</sup></div>
@@ -615,8 +682,22 @@ footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;font-
       <span class="badge b-blue">IIT Bhilai</span>
     </div>
     <div class="ccps-p">
-      <figure class="pic" style="margin:0"><button type="button" class="shotbtn" data-g="ccps" data-i="0" aria-label="View photo: being presented a certificate by CCPS"><img src="assets/ccps-certificate.jpg" alt="Teesha receiving a certificate from a faculty member at a CCPS event, with a colleague applauding" loading="lazy" width="1600" height="1067"><span class="pcap">certificate from CCPS</span></button></figure>
-      <figure class="pic" style="margin:0"><button type="button" class="shotbtn" data-g="ccps" data-i="1" aria-label="View photo: the CCPS team group photo"><img src="assets/ccps-team.jpg" alt="Group photo of the CCPS student team and faculty in a lecture hall at IIT Bhilai" loading="lazy" width="1600" height="1067"><span class="pcap">the CCPS team</span></button></figure>
+      <figure class="polaroid" style="--rot:-2deg">
+        <span class="tape" style="--tape:var(--accent)"></span>
+        <button type="button" class="ph shotbtn" data-g="ccps" data-i="0" aria-label="View photo: being presented a certificate by CCPS">
+          <img src="assets/ccps-certificate.jpg" alt="Teesha receiving a certificate from a faculty member at a CCPS event, with a colleague applauding" loading="lazy" width="1600" height="1067">
+          <span class="vf"></span><span class="rec">REC</span><span class="meta">CCPS · IIT BHILAI</span>
+        </button>
+        <figcaption>a proud moment <small>ccps</small></figcaption>
+      </figure>
+      <figure class="polaroid" style="--rot:2.5deg">
+        <span class="tape l" style="--tape:var(--blue)"></span><span class="tape r" style="--tape:var(--blue)"></span>
+        <button type="button" class="ph shotbtn" data-g="ccps" data-i="1" aria-label="View photo: the CCPS team group photo">
+          <img src="assets/ccps-team.jpg" alt="Group photo of the CCPS student team and faculty in a lecture hall at IIT Bhilai" loading="lazy" width="1600" height="1067">
+          <span class="vf"></span><span class="rec">REC</span><span class="meta">CCPS · IIT BHILAI</span>
+        </button>
+        <figcaption>team ccps <small>2025–26</small></figcaption>
+      </figure>
     </div>
   </div>
 </section>
